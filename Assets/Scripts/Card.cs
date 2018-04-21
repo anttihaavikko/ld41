@@ -51,6 +51,8 @@ public class Card : MonoBehaviour {
 
 	public Face face;
 
+	public LayerMask defaultMask;
+
 	// Use this for initialization
 	void Start () {
 		originalScale = transform.localScale;
@@ -212,7 +214,7 @@ public class Card : MonoBehaviour {
 	}
 
 	public void AddMove(Vector3 pos, bool raised = false) {
-		Collider2D hit = Physics2D.OverlapCircle (pos, 0.25f);
+		Collider2D hit = Physics2D.OverlapCircle (pos, 0.25f, defaultMask);
 		raised = hit ? true : raised;
 		moves.Add (pos + new Vector3(0, 0, raised ? -1f : 0));
 	}
@@ -230,6 +232,7 @@ public class Card : MonoBehaviour {
 
 		face.Emote (Face.Emotion.Shocked);
 
+		Debug.Log ("Moving to " + moves [i]);
 		Tweener.Instance.MoveTo (transform, moves [i], 0.3f, 0f, TweenEasings.QuadraticEaseIn);
 
 		nextMove = i + 1;
@@ -240,6 +243,16 @@ public class Card : MonoBehaviour {
 			line.enabled = true;
 
 			Collider2D hit = Physics2D.OverlapCircle (moves [i], 0.25f);
+
+			if (hit && hit.tag == "Star") {
+
+				EffectManager.Instance.AddEffect (0, hit.transform.position);
+				EffectManager.Instance.AddEffect (1, hit.transform.position);
+
+				hit.gameObject.SetActive (false);
+				Manager.Instance.enableThese.Add (hit.gameObject);
+				hit = null;
+			}
 
 			if (hit) {
 				Explode ();

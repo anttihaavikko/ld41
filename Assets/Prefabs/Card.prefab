@@ -632,6 +632,9 @@ MonoBehaviour:
   line: {fileID: 120911136572212890}
   moves: []
   face: {fileID: 114697267234022316}
+  defaultMask:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &114697267234022316
 MonoBehaviour:
   m_ObjectHideFlags: 1

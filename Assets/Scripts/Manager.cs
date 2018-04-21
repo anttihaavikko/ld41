@@ -12,7 +12,10 @@ public class Manager : MonoBehaviour {
 	private bool processing = false;
 	public Transform guide1, guide2;
 
+	public GameObject gridItem;
+
 	public List<int> numbers;
+	public List<GameObject> enableThese;
 
 	private static Manager instance = null;
 	public static Manager Instance {
@@ -28,6 +31,17 @@ public class Manager : MonoBehaviour {
 		}
 
 		numbers = new List<int> ();
+		enableThese = new List<GameObject> ();
+
+//		AddGrid (startPoint.position + Vector3.up * 1.5f * 0.75f, 0);
+	}
+
+	void AddGrid(Vector3 pos, int count) {
+		Instantiate (gridItem, pos, Quaternion.identity);
+		if(count < 5) {
+			AddGrid (pos + Vector3.left + Vector3.up * 1.5f, count+1);
+			AddGrid (pos + Vector3.right + Vector3.up * 1.5f, count+1);
+		}
 	}
 
 	void Update() {
@@ -57,6 +71,12 @@ public class Manager : MonoBehaviour {
 	private void DelayedRestart() {
 		processing = false;
 		stack.SpawnNewHand ();
+
+		foreach (GameObject g in enableThese) {
+			g.SetActive (true);
+		}
+
+		enableThese.Clear ();
 	}
 
 	public void ProcessNext() {
@@ -84,6 +104,8 @@ public class Manager : MonoBehaviour {
 			float mod = c.number < parent.number ? -1f : 1f;
 			pos = parent.transform.position + new Vector3 (1f * mod, height, 0f);
 		}
+
+		pos.z = 0;
 
 		c.AddMove (pos, false);
 		c.NextMove (0);
