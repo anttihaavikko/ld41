@@ -53,6 +53,8 @@ public class Card : MonoBehaviour {
 
 	public LayerMask defaultMask;
 
+	public float delayBeforeNext = 0f;
+
 	// Use this for initialization
 	void Start () {
 		originalScale = transform.localScale;
@@ -252,10 +254,14 @@ public class Card : MonoBehaviour {
 				hit.gameObject.SetActive (false);
 				Manager.Instance.enableThese.Add (hit.gameObject);
 				hit = null;
+
+				Manager.Instance.GetStar ();
 			}
 
 			if (hit) {
 				Explode ();
+
+				Manager.Instance.ShowRestart ();
 
 				var other = hit.GetComponent<Card> ();
 				if (other) {
@@ -263,9 +269,12 @@ public class Card : MonoBehaviour {
 				}
 
 			} else {
+
+				float extraDelay = Manager.Instance.ShowMoveTutorial (transform.position, moves [i]) ? 3.5f : 0f;
+
 				shadow.enabled = false;
 				Invoke ("Squish", 0.3f);
-				Invoke ("NextCard", 0.5f);
+				Invoke ("NextCard", 0.5f + delayBeforeNext + extraDelay);
 				face.Emote (Face.Emotion.Happy, Face.Emotion.Default, 1f);
 			}
 		}
@@ -312,5 +321,15 @@ public class Card : MonoBehaviour {
 		mm.startColor = colorSprite.color;
 
 		Destroy (gameObject);
+	}
+
+	public void JustRemove() {
+		Destroy (gameObject);
+
+		if (leftLink)
+			leftLink.JustRemove ();
+
+		if (rightLink)
+			rightLink.JustRemove ();
 	}
 }

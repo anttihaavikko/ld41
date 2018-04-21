@@ -19,6 +19,9 @@ public class CardHolder : MonoBehaviour {
 	}
 
 	public void SpawnNewHand() {
+
+		Manager.Instance.ShowStartTutorials ();
+
 		Manager.Instance.ResetNumbers ();
 		for (int i = 0; i < numberOfCards; i++) {
 			Invoke ("SpawnCard", i * 0.1f);

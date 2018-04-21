@@ -17,6 +17,16 @@ public class Manager : MonoBehaviour {
 	public List<int> numbers;
 	public List<GameObject> enableThese;
 
+	public HelpMessage[] tutorials;
+	public GameObject restartButton;
+
+	private bool canRestart = true;
+
+	private int level = 0;
+	private int stars = 0;
+
+	public Level[] levels;
+
 	private static Manager instance = null;
 	public static Manager Instance {
 		get { return instance; }
@@ -33,6 +43,8 @@ public class Manager : MonoBehaviour {
 		numbers = new List<int> ();
 		enableThese = new List<GameObject> ();
 
+		ActivateLevel ();
+
 //		AddGrid (startPoint.position + Vector3.up * 1.5f * 0.75f, 0);
 	}
 
@@ -45,8 +57,8 @@ public class Manager : MonoBehaviour {
 	}
 
 	void Update() {
-		if (Input.GetKeyDown (KeyCode.Space) && !processing) {
-			ProcessNext ();
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			StartProcessing ();
 		}
 
 		if (Application.isEditor) {
@@ -58,14 +70,33 @@ public class Manager : MonoBehaviour {
 		}
 	}
 
+	public void GetStar() {
+		stars++;
+	}
+
 	public void Restart() {
-		stack.ClearHand ();
 
-		if (treeFirst) {
-			treeFirst.Explode ();
+		if (canRestart) {
+			stars = 0;
+
+			canRestart = false;
+
+			HideTutorial ();
+			stack.ClearHand ();
+
+			if (treeFirst) {
+				treeFirst.Explode ();
+			}
+
+			CancelInvoke ("DelayedRestart");
+			Invoke ("DelayedRestart", 1f);
+
+			Invoke ("EnableRestart", 2f);
 		}
+	}
 
-		Invoke ("DelayedRestart", 1f);
+	void EnableRestart() {
+		canRestart = true;
 	}
 
 	private void DelayedRestart() {
@@ -80,13 +111,28 @@ public class Manager : MonoBehaviour {
 		enableThese.Clear ();
 	}
 
+	public void StartProcessing() {
+		if (!processing) {
+			processing = true;
+			ProcessNext ();
+		}
+	}
+
 	public void ProcessNext() {
-		processing = true;
+
+		if (!processing) {
+			HideTutorial (0);
+			HideTutorial (1);
+		}
 
 		Card c = stack.RemoveFirst();
 
-		if (!c)
+		if (!c) {
+			if (IsCurrentLevelComplete ()) {
+				NextLevel ();
+			}
 			return;
+		}
 
 		float height = 1.5f;
 
@@ -96,7 +142,16 @@ public class Manager : MonoBehaviour {
 		c.AddMove (guide2.position, true);
 		c.AddMove (startPoint.position, true);
 
+		bool addExtraDelay = false;
+
 		if (!treeFirst) {
+
+			if (level == 0) {
+				ShowTutorial (3, 0.5f);
+				Invoke ("DelayedTutorialHide", 3.5f);
+				c.delayBeforeNext = 3f;
+			}
+
 			treeFirst = c;
 			pos = startPoint.position + new Vector3 (0f, height * 0.75f, 0f);
 			c.SetLineRoot (startPoint.position);
@@ -109,6 +164,7 @@ public class Manager : MonoBehaviour {
 		pos.z = 0;
 
 		c.AddMove (pos, false);
+
 		c.NextMove (0);
 	}
 
@@ -127,5 +183,84 @@ public class Manager : MonoBehaviour {
 
 	public void ResetNumbers() {
 		numbers.Clear ();
+	}
+
+	public void ShowTutorial(int i, float delay = 0f) {
+		tutorials [i].Show (delay);
+	}
+
+	public void HideTutorial(int i = -1, float delay = 0f) {
+
+		if (i == -1) {
+			foreach (HelpMessage hm in tutorials) {
+				hm.Hide ();
+			}
+		} else {
+			tutorials [i].Hide (delay);
+		}
+	}
+
+	public void ShowRestart() {
+		if (!restartButton.activeSelf) {
+			restartButton.SetActive (true);
+			ShowTutorial (2);
+		}
+	}
+
+	public void ShowStartTutorials() {
+		if (level == 0) {
+			Manager.Instance.ShowTutorial (0, 1.5f);
+			Manager.Instance.ShowTutorial (1, 3f);
+		}
+		if (level == 1) {
+			Manager.Instance.ShowTutorial (6, 1f);
+		}
+	}
+
+	public bool ShowMoveTutorial(Vector3 pos, Vector3 nextPos) {
+		if (level == 0 && Mathf.Abs(pos.x - nextPos.x) > 0.1f) {
+			int tutMes = pos.x > nextPos.x ? 5 : 4;
+			tutorials [tutMes].transform.position = nextPos + Vector3.right;
+			ShowTutorial (tutMes);
+			Invoke ("DelayedTutorialHide", 3.5f);
+			return true;
+		}
+
+		return false;
+	}
+
+	public void DelayedTutorialHide() {
+		HideTutorial ();
+	}
+
+	public bool IsCurrentLevelComplete() {
+		return levels [level].IsComplete (stars);
+	}
+
+	public void NextLevel() {
+
+		HideTutorial ();
+
+		treeFirst.JustRemove ();
+		treeFirst = null;
+
+		processing = false;
+
+		level++;
+		if (level >= levels.Length) {
+			level = 0;
+		}
+
+		ActivateLevel ();
+		stack.numberOfCards = levels [level].cards;
+		stack.SpawnNewHand ();
+	}
+
+	public void ActivateLevel() {
+		foreach (Level l in levels) {
+			l.gameObject.SetActive (false);
+		}
+
+		levels [level].gameObject.SetActive (true);
 	}
 }
