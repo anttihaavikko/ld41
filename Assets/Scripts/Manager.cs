@@ -179,7 +179,7 @@ public class Manager : MonoBehaviour {
 			}
 
 			treeFirst = c;
-			pos = startPoint.position + new Vector3 (0f, height * 0.75f * lengthSlider.value, 0f);
+			pos = startPoint.position + new Vector3 (0f, height * 0.75f, 0f);
 			c.SetLineRoot (startPoint.position);
 		} else {
 			Card parent = treeFirst.AddLink (c);

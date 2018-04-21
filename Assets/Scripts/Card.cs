@@ -55,6 +55,8 @@ public class Card : MonoBehaviour {
 
 	public float delayBeforeNext = 0f;
 
+	private Vector2 colliderSize;
+
 	// Use this for initialization
 	void Start () {
 		originalScale = transform.localScale;
@@ -68,6 +70,8 @@ public class Card : MonoBehaviour {
 		moves = new List<Vector3> ();
 
 		colorSprite.color = Color.HSVToRGB (Random.value, 0.5f, 0.99f);
+
+		colliderSize = GetComponent<BoxCollider2D> ().bounds.size;
 	}
 
 	public void SetSpeed(float s) {
@@ -216,7 +220,7 @@ public class Card : MonoBehaviour {
 	}
 
 	public void AddMove(Vector3 pos, bool raised = false) {
-		Collider2D hit = Physics2D.OverlapCircle (pos, 0.25f, defaultMask);
+		Collider2D hit = Physics2D.OverlapBox (pos, colliderSize, 0, defaultMask);
 		raised = hit ? true : raised;
 		moves.Add (pos + new Vector3(0, 0, raised ? -1f : 0));
 	}
@@ -234,20 +238,21 @@ public class Card : MonoBehaviour {
 
 		face.Emote (Face.Emotion.Shocked);
 
+		nextMove = i + 1;
+
 //		Debug.Log ("Moving to " + moves [i]);
+
+//		float lenMod = nextMove < moves.Count ? 1f : Manager.Instance.lengthSlider.value;
+
 		Tweener.Instance.MoveTo (transform, moves [i], 0.3f, 0f, TweenEasings.QuadraticEaseIn);
 
-		nextMove = i + 1;
 		if (nextMove < moves.Count) {
 			Invoke ("DoMove", 0.3f);
 		} else {
 
 			line.enabled = true;
 
-//			Collider2D hit = Physics2D.OverlapCircle (moves [i], 0.25f);
-			gameObject.layer = 10;
-			Collider2D hit = Physics2D.OverlapBox (moves [i], GetComponent<BoxCollider2D> ().bounds.size, 0);
-			gameObject.layer = 0;
+			Collider2D hit = Physics2D.OverlapBox (moves [i], colliderSize, 0);
 
 			if (hit && hit.tag == "Star") {
 
@@ -255,10 +260,8 @@ public class Card : MonoBehaviour {
 				hit = null;
 				Manager.Instance.GetStar ();
 			}
-
-			gameObject.layer = 10;
+				
 			hit = Physics2D.OverlapBox (moves [i], GetComponent<BoxCollider2D> ().bounds.size, 0, collisionMask);
-			gameObject.layer = 0;
 
 			if (hit && i > 3) {
 //				Debug.Log ("Hit " + hit.gameObject.name);
