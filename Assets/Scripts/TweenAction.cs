@@ -56,6 +56,10 @@ public class TweenAction {
 
 	public bool Process() {
 
+		if (!theObject) {
+			return true;
+		}
+
 		if (tweenDelay > 0f) {
 
 			tweenDelay -= Time.deltaTime;

@@ -16,6 +16,7 @@ public class CardHolder : MonoBehaviour {
 	void Start () {
 		cards = new List<Card> ();
 
+		Manager.Instance.ResetNumbers ();
 		for (int i = 0; i < numberOfCards; i++) {
 			SpawnCard ();
 		}
@@ -104,7 +105,7 @@ public class CardHolder : MonoBehaviour {
 		float curPos = 0f;
 
 		for (int i = 0; i < cards.Count; i++) {
-			curPos += cards [i].transform.localScale.y * 0.5f;
+			curPos += cards [i].transform.localScale.y * 0.525f;
 			cards [i].Move(transform.position + (-areaSize * 0.5f + curPos) * Vector3.up + Vector3.back * 0.01f);
 			curPos += cards [i].transform.localScale.y * 0.5f + 0.1f;
 		}

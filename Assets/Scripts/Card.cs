@@ -32,7 +32,7 @@ public class Card : MonoBehaviour {
 
 	public bool isMatrix = true;
 	private int operation = -1;
-	public SpriteRenderer operationSprite;
+	public SpriteRenderer colorSprite;
 
 	private Vector3 shadowScale;
 
@@ -46,6 +46,8 @@ public class Card : MonoBehaviour {
 
 	public List<Vector3> moves;
 	private int nextMove = -1;
+	private bool shaking = false;
+	private float shakeAmount = 0.1f;
 
 	// Use this for initialization
 	void Start () {
@@ -54,12 +56,12 @@ public class Card : MonoBehaviour {
 
 		shadowScale = shadow.transform.localScale;
 
-		number = Random.Range (1, 99);
+		number = Manager.Instance.GenerateNewNumber();
 		numberText.text = number.ToString();
 
 		moves = new List<Vector3> ();
 
-//		sprite.color = new Color (Random.Range (0.5f, 1f), Random.Range (0.5f, 1f), Random.Range (0.5f, 1f));
+		colorSprite.color = Color.HSVToRGB (Random.value, 0.5f, 0.99f);
 	}
 
 	public void SetSpeed(float s) {
@@ -96,10 +98,17 @@ public class Card : MonoBehaviour {
 		Tilt (lastPos, transform.position);
 		float offset = dragging ? 0.1f : 0f;
 
-		shadow.transform.position = new Vector3 (transform.position.x, transform.position.y, dragging ? -0.5f : 0f);
+		shadow.transform.position = new Vector3 (transform.position.x, transform.position.y, dragging ? -0.25f : 0f);
 		shadow.transform.localScale = dragging ? shadowScale * 1.1f : shadowScale;
 
 		line.SetPosition (0, transform.position);
+
+		if (shaking) {
+			float amt = 0.1f;
+			shakeAmount += Time.deltaTime;
+			transform.position += new Vector3 (Random.Range (-amt, amt) * shakeAmount, Random.Range (-amt, amt) * shakeAmount, 0f);
+			transform.rotation = Quaternion.Euler(new Vector3 (0, 0, Random.Range (-5f, 5f) * shakeAmount));
+		}
 	}
 
 	private void Tilt(Vector3 prevPos, Vector3 curPos) {
@@ -154,6 +163,10 @@ public class Card : MonoBehaviour {
 	public void OnMouseUp() {
 
 		if (!Manager.Instance.CanInteract ()) {
+			
+			if (Application.isEditor)
+				Explode ();
+			
 			return;
 		}
 
@@ -162,23 +175,6 @@ public class Card : MonoBehaviour {
 		currentHolder.AddCard (this, false);
 
 		sprite.sortingLayerName = "Default";
-	}
-
-	public void UseCard(float delay = 0f) {
-		Invoke ("UseCard", delay);
-		Invoke ("UseSound", delay);
-	}
-
-	public void UseSound() {
-//		AudioManager.Instance.PlayEffectAt (3, transform.position, 0.5f);
-	}
-
-	public void UseCard() {
-//		int type = isMatrix ? 0 : 1;
-//		currentHolder.RemoveCard (this);
-//		currentHolder.targetHolders[type].AddCard (this, false);
-
-//		AudioManager.Instance.PlayEffectAt (6, transform.position, 0.5f);
 	}
 
 	private bool LeftArea(float distance) {
@@ -214,6 +210,8 @@ public class Card : MonoBehaviour {
 	}
 
 	public void AddMove(Vector3 pos, bool raised = false) {
+		Collider2D hit = Physics2D.OverlapCircle (pos, 0.25f);
+		raised = hit ? true : raised;
 		moves.Add (pos + new Vector3(0, 0, raised ? -1f : 0));
 	}
 
@@ -234,10 +232,65 @@ public class Card : MonoBehaviour {
 		if (nextMove < moves.Count) {
 			Invoke ("DoMove", 0.3f);
 		} else {
+
 			line.enabled = true;
-			shadow.enabled = false;
+
+			Collider2D hit = Physics2D.OverlapCircle (moves [i], 0.25f);
+
+			if (hit) {
+				Explode ();
+
+				var other = hit.GetComponent<Card> ();
+				if (other) {
+					other.Explode (0.5f);
+				}
+
+			} else {
+				shadow.enabled = false;
+				Invoke ("Squish", 0.3f);
+				Invoke ("NextCard", 0.5f);
+			}
 		}
 	}
 
+	public void Squish() {
+		EffectManager.Instance.AddEffect (2, transform.position);
+		Tweener.Instance.ScaleTo (transform, Vector3.one * 0.9f, 0.2f, 0f, TweenEasings.BounceEaseOut);
 
+	}
+
+	private void NextCard() {
+		Manager.Instance.ProcessNext ();
+	}
+
+	public void Explode(float delay = 0f) {
+
+		if (leftLink)
+			leftLink.Explode (delay);
+		
+		if (rightLink)
+			rightLink.Explode (delay);
+
+		Invoke ("Shake", 0.3f + delay);
+		Invoke ("ExplodeNow", 1.1f + delay);
+	}
+
+	public void Shake() {
+		shaking = true;
+	}
+
+	public void ExplodeNow() {
+		
+		Vector3 pos = transform.position;
+		pos.z = 0;
+
+		EffectManager.Instance.AddEffect (0, pos);
+		EffectManager.Instance.AddEffect (1, pos);
+
+		ParticleSystem colorBits = EffectManager.Instance.AddEffect (3, pos).GetComponent<ParticleSystem>();
+		ParticleSystem.MainModule mm = colorBits.main;
+		mm.startColor = colorSprite.color;
+
+		Destroy (gameObject);
+	}
 }

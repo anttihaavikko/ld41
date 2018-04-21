@@ -12,6 +12,8 @@ public class Manager : MonoBehaviour {
 	private bool processing = false;
 	public Transform guide1, guide2;
 
+	public List<int> numbers;
+
 	private static Manager instance = null;
 	public static Manager Instance {
 		get { return instance; }
@@ -24,19 +26,25 @@ public class Manager : MonoBehaviour {
 		} else {
 			instance = this;
 		}
+
+		numbers = new List<int> ();
 	}
 
 	void Update() {
-		if (Input.GetKeyDown (KeyCode.Space)) {
+		if (Input.GetKeyDown (KeyCode.Space) && !processing) {
 			ProcessNext ();
 		}
 
-		if (Application.isEditor && Input.GetKeyDown (KeyCode.R)) {
-			SceneManager.LoadScene ("Main");
+		if (Application.isEditor) {
+
+			Time.timeScale = Input.GetKey (KeyCode.Tab) ? 5f : 1f;
+
+			if(Input.GetKeyDown (KeyCode.R))
+				SceneManager.LoadScene ("Main");
 		}
 	}
 
-	void ProcessNext() {
+	public void ProcessNext() {
 		processing = true;
 
 		Card c = stack.RemoveFirst();
@@ -70,5 +78,16 @@ public class Manager : MonoBehaviour {
 		return !processing;
 	}
 
+	public int GenerateNewNumber() {
+		int num = Random.Range (1, 99);
+		while (numbers.Contains (num)) {
+			num = Random.Range (1, 99);
+		}
+		numbers.Add (num);
+		return num;
+	}
 
+	public void ResetNumbers() {
+		numbers.Clear ();
+	}
 }
