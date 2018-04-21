@@ -74,6 +74,7 @@ public class Manager : MonoBehaviour {
 
 		foreach (GameObject g in enableThese) {
 			g.SetActive (true);
+			EffectManager.Instance.AddEffect (1, g.transform.position);
 		}
 
 		enableThese.Clear ();

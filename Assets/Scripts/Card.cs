@@ -232,7 +232,7 @@ public class Card : MonoBehaviour {
 
 		face.Emote (Face.Emotion.Shocked);
 
-		Debug.Log ("Moving to " + moves [i]);
+//		Debug.Log ("Moving to " + moves [i]);
 		Tweener.Instance.MoveTo (transform, moves [i], 0.3f, 0f, TweenEasings.QuadraticEaseIn);
 
 		nextMove = i + 1;
