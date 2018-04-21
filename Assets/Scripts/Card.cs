@@ -49,6 +49,8 @@ public class Card : MonoBehaviour {
 	private bool shaking = false;
 	private float shakeAmount = 0.1f;
 
+	public Face face;
+
 	// Use this for initialization
 	void Start () {
 		originalScale = transform.localScale;
@@ -164,7 +166,7 @@ public class Card : MonoBehaviour {
 
 		if (!Manager.Instance.CanInteract ()) {
 			
-			if (Application.isEditor)
+			if (Application.isEditor && Input.GetKey(KeyCode.K))
 				Explode ();
 			
 			return;
@@ -226,6 +228,8 @@ public class Card : MonoBehaviour {
 	public void NextMove(int i) {
 //		transform.position = moves [i];
 
+		face.Emote (Face.Emotion.Shocked);
+
 		Tweener.Instance.MoveTo (transform, moves [i], 0.3f, 0f, TweenEasings.QuadraticEaseIn);
 
 		nextMove = i + 1;
@@ -249,6 +253,7 @@ public class Card : MonoBehaviour {
 				shadow.enabled = false;
 				Invoke ("Squish", 0.3f);
 				Invoke ("NextCard", 0.5f);
+				face.Emote (Face.Emotion.Happy, Face.Emotion.Default, 1f);
 			}
 		}
 	}
@@ -264,6 +269,8 @@ public class Card : MonoBehaviour {
 	}
 
 	public void Explode(float delay = 0f) {
+
+		face.Emote (Face.Emotion.Angry);
 
 		if (leftLink)
 			leftLink.Explode (delay);

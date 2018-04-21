@@ -15,16 +15,26 @@ public class CardHolder : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		cards = new List<Card> ();
+		SpawnNewHand ();
+	}
 
+	public void SpawnNewHand() {
 		Manager.Instance.ResetNumbers ();
 		for (int i = 0; i < numberOfCards; i++) {
-			SpawnCard ();
+			Invoke ("SpawnCard", i * 0.1f);
 		}
+	}
+
+	public void ClearHand() {
+		foreach (Card c in cards) {
+			c.Explode ();
+		}
+		cards.Clear ();
 	}
 
 	public void SpawnCard() {
 		if (cards.Count < cardMax) {
-			Card c = Instantiate (cardPrefab, transform.position + (cards.Count + 1) * 0.5f * 1.1f * Vector3.up, Quaternion.identity);
+			Card c = Instantiate (cardPrefab, transform.position + ((cards.Count + 1) * 0.5f * 1.1f + 5f) * Vector3.up, Quaternion.identity);
 			c.transform.localScale = new Vector3 (1f, 1f, 1f);
 			AddCard (c, true);
 			PositionCards ();

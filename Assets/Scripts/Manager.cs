@@ -39,9 +39,24 @@ public class Manager : MonoBehaviour {
 
 			Time.timeScale = Input.GetKey (KeyCode.Tab) ? 5f : 1f;
 
-			if(Input.GetKeyDown (KeyCode.R))
-				SceneManager.LoadScene ("Main");
+			if (Input.GetKeyDown (KeyCode.R))
+				Restart ();
 		}
+	}
+
+	public void Restart() {
+		stack.ClearHand ();
+
+		if (treeFirst) {
+			treeFirst.Explode ();
+		}
+
+		Invoke ("DelayedRestart", 1f);
+	}
+
+	private void DelayedRestart() {
+		processing = false;
+		stack.SpawnNewHand ();
 	}
 
 	public void ProcessNext() {

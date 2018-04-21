@@ -493,7 +493,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1558545047647726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.263, z: 0}
+  m_LocalPosition: {x: 0, y: -0.327, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4289549295263980}
@@ -572,7 +572,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.004302323}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -583,7 +583,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.74, y: 1.17}
+  m_Size: {x: 1.5944176, y: 1.1160444}
   m_EdgeRadius: 0
 --- !u!102 &102297339694716328
 TextMesh:
@@ -631,6 +631,7 @@ MonoBehaviour:
   rightLink: {fileID: 0}
   line: {fileID: 120911136572212890}
   moves: []
+  face: {fileID: 114697267234022316}
 --- !u!114 &114697267234022316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -653,18 +654,18 @@ MonoBehaviour:
   blinkSpeed: 1
   faceRange: {x: 0.05, y: 0.11}
   pupilRange: {x: 0.2, y: 0.2}
-  mouthCloseChange: 0.5
-  mouthSpeed: 1
+  mouthCloseChange: 0.3
+  mouthSpeed: 0.5
   mouthRange: {x: 0.1, y: 0.1, z: 1}
   browRange: 0.05
   lookTarget: {fileID: 0}
   lookSpeed: 1
-  emoteSpeed: 0.05
+  emoteSpeed: 0.03
   mouthSprite: {fileID: 212975354711998552}
-  mouthAngry: {fileID: 21300000, guid: 0eeb4eb2958cb40dd8edf3cee1409048, type: 3}
+  mouthAngry: {fileID: 21300000, guid: 8f387be8b3855444c9bc6630f33850ed, type: 3}
   mouthSad: {fileID: 21300000, guid: 0eeb4eb2958cb40dd8edf3cee1409048, type: 3}
   mouthHappy: {fileID: 21300000, guid: 0eeb4eb2958cb40dd8edf3cee1409048, type: 3}
-  mouthOpen: {fileID: 21300000, guid: 0eeb4eb2958cb40dd8edf3cee1409048, type: 3}
+  mouthOpen: {fileID: 21300000, guid: ba4b94266f24e4cc7a3ec41e4302e74d, type: 3}
   followMouse: 0
 --- !u!120 &120911136572212890
 LineRenderer:
