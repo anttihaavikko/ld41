@@ -51,7 +51,7 @@ public class Card : MonoBehaviour {
 
 	public Face face;
 
-	public LayerMask defaultMask;
+	public LayerMask defaultMask, collisionMask;
 
 	public float delayBeforeNext = 0f;
 
@@ -244,21 +244,24 @@ public class Card : MonoBehaviour {
 
 			line.enabled = true;
 
-			Collider2D hit = Physics2D.OverlapCircle (moves [i], 0.25f);
+//			Collider2D hit = Physics2D.OverlapCircle (moves [i], 0.25f);
+			gameObject.layer = 10;
+			Collider2D hit = Physics2D.OverlapBox (moves [i], GetComponent<BoxCollider2D> ().bounds.size, 0);
+			gameObject.layer = 0;
 
 			if (hit && hit.tag == "Star") {
 
-				EffectManager.Instance.AddEffect (0, hit.transform.position);
-				EffectManager.Instance.AddEffect (1, hit.transform.position);
-
-				hit.gameObject.SetActive (false);
-				Manager.Instance.enableThese.Add (hit.gameObject);
+				hit.GetComponent<Star> ().Grab ();
 				hit = null;
-
 				Manager.Instance.GetStar ();
 			}
 
-			if (hit) {
+			gameObject.layer = 10;
+			hit = Physics2D.OverlapBox (moves [i], GetComponent<BoxCollider2D> ().bounds.size, 0, collisionMask);
+			gameObject.layer = 0;
+
+			if (hit && i > 3) {
+//				Debug.Log ("Hit " + hit.gameObject.name);
 				Explode ();
 
 				Manager.Instance.ShowRestart ();

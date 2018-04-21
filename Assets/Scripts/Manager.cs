@@ -27,6 +27,9 @@ public class Manager : MonoBehaviour {
 
 	public Level[] levels;
 
+	public Dimmer dimmer;
+	public Slider lengthSlider;
+
 	private static Manager instance = null;
 	public static Manager Instance {
 		get { return instance; }
@@ -61,12 +64,14 @@ public class Manager : MonoBehaviour {
 			StartProcessing ();
 		}
 
-		if (Application.isEditor) {
+		if (Input.GetKeyDown (KeyCode.R))
+			Restart ();
 
+		if (Application.isEditor) {
 			Time.timeScale = Input.GetKey (KeyCode.Tab) ? 5f : 1f;
 
-			if (Input.GetKeyDown (KeyCode.R))
-				Restart ();
+			if (Input.GetKeyDown (KeyCode.KeypadPlus))
+				NextLevel ();
 		}
 	}
 
@@ -115,22 +120,43 @@ public class Manager : MonoBehaviour {
 		if (!processing) {
 			processing = true;
 			ProcessNext ();
+
+			if (level == 0) {
+				HideTutorial (0);
+				HideTutorial (1);
+			}
+
+			if (level == 1) {
+				HideTutorial (6);
+			}
+
+			if (level == 3) {
+				HideTutorial (7);
+			}
+
+			if (level == 7) {
+				HideTutorial (8);
+			}
 		}
+	}
+
+	void LevelEnds() {
+		dimmer.FadeIn (1f);
 	}
 
 	public void ProcessNext() {
 
-		if (!processing) {
-			HideTutorial (0);
-			HideTutorial (1);
-		}
-
 		Card c = stack.RemoveFirst();
 
 		if (!c) {
+			
 			if (IsCurrentLevelComplete ()) {
-				NextLevel ();
+				Invoke ("NextLevel", 2.5f);
+				Invoke ("LevelEnds", 1f);
+			} else {
+				ShowRestart ();
 			}
+
 			return;
 		}
 
@@ -153,12 +179,12 @@ public class Manager : MonoBehaviour {
 			}
 
 			treeFirst = c;
-			pos = startPoint.position + new Vector3 (0f, height * 0.75f, 0f);
+			pos = startPoint.position + new Vector3 (0f, height * 0.75f * lengthSlider.value, 0f);
 			c.SetLineRoot (startPoint.position);
 		} else {
 			Card parent = treeFirst.AddLink (c);
 			float mod = c.number < parent.number ? -1f : 1f;
-			pos = parent.transform.position + new Vector3 (1f * mod, height, 0f);
+			pos = parent.transform.position + new Vector3 (1f * mod * lengthSlider.value, height * lengthSlider.value, 0f);
 		}
 
 		pos.z = 0;
@@ -192,6 +218,8 @@ public class Manager : MonoBehaviour {
 	public void HideTutorial(int i = -1, float delay = 0f) {
 
 		if (i == -1) {
+			CancelInvoke ("DelayedTutorialHide");
+
 			foreach (HelpMessage hm in tutorials) {
 				hm.Hide ();
 			}
@@ -214,6 +242,12 @@ public class Manager : MonoBehaviour {
 		}
 		if (level == 1) {
 			Manager.Instance.ShowTutorial (6, 1f);
+		}
+		if (level == 3) {
+			Manager.Instance.ShowTutorial (7, 1f);
+		}
+		if (level == 7) {
+			Manager.Instance.ShowTutorial (8, 1f);
 		}
 	}
 
@@ -239,10 +273,15 @@ public class Manager : MonoBehaviour {
 
 	public void NextLevel() {
 
+		dimmer.FadeOut (0.5f);
+
 		HideTutorial ();
 
-		treeFirst.JustRemove ();
-		treeFirst = null;
+		if (treeFirst) {
+			treeFirst.JustRemove ();
+			treeFirst = null;
+		}
+		
 
 		processing = false;
 
@@ -253,10 +292,16 @@ public class Manager : MonoBehaviour {
 
 		ActivateLevel ();
 		stack.numberOfCards = levels [level].cards;
+		stack.ClearHand (true);
 		stack.SpawnNewHand ();
 	}
 
 	public void ActivateLevel() {
+		stars = 0;
+
+		lengthSlider.value = 1f;
+		lengthSlider.gameObject.SetActive(levels [level].sliderEnabled);
+
 		foreach (Level l in levels) {
 			l.gameObject.SetActive (false);
 		}

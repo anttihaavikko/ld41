@@ -5,6 +5,7 @@ using UnityEngine;
 public class Level : MonoBehaviour {
 	public int stars = 0;
 	public int cards = 1;
+	public bool sliderEnabled = false;
 
 	public bool IsComplete(int s) {
 		return (s >= stars);

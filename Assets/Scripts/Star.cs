@@ -31,4 +31,16 @@ public class Star : MonoBehaviour {
 		angle += speed * Time.deltaTime * direction;
 		transform.rotation = Quaternion.Euler (new Vector3 (0, 0, angle));
 	}
+
+	public void Grab() {
+		Invoke ("Explode", 0.25f);
+	}
+
+	public void Explode() {
+		EffectManager.Instance.AddEffect (0, transform.position);
+		EffectManager.Instance.AddEffect (1, transform.position);
+
+		gameObject.SetActive (false);
+		Manager.Instance.enableThese.Add (gameObject);
+	}
 }

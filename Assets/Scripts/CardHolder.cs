@@ -28,9 +28,12 @@ public class CardHolder : MonoBehaviour {
 		}
 	}
 
-	public void ClearHand() {
+	public void ClearHand(bool silent = false) {
 		foreach (Card c in cards) {
-			c.Explode ();
+			if (silent)
+				c.JustRemove ();
+			else
+				c.Explode ();
 		}
 		cards.Clear ();
 	}
