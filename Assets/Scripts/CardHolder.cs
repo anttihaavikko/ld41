@@ -131,4 +131,12 @@ public class CardHolder : MonoBehaviour {
 	public int CardCount() {
 		return cards.Count;
 	}
+
+	public void AllEmote(Face.Emotion emotion) {
+		foreach(Card c in cards) {
+			if(c) {
+				c.face.Emote (emotion);
+			}
+		}
+	}
 }

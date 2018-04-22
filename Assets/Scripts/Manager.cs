@@ -50,9 +50,12 @@ public class Manager : MonoBehaviour {
 		numbers = new List<int> ();
 		enableThese = new List<GameObject> ();
 
-		ActivateLevel ();
-
 //		AddGrid (startPoint.position + Vector3.up * 1.5f * 0.75f, 0);
+	}
+
+	void Start() {
+		level = StatsManager.Instance.level;
+		ActivateLevel ();
 	}
 
 	void AddGrid(Vector3 pos, int count) {
@@ -64,8 +67,17 @@ public class Manager : MonoBehaviour {
 	}
 
 	void Update() {
+
+		StatsManager.Instance.AddTime (Time.deltaTime);
+
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			StartProcessing ();
+		}
+
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			dimmer.FadeIn (1f);
+			CancelInvoke ("BackToStart");
+			Invoke ("BackToStart", 1.1f);
 		}
 
 		if (Input.GetKeyDown (KeyCode.R))
@@ -75,8 +87,12 @@ public class Manager : MonoBehaviour {
 			Time.timeScale = Input.GetKey (KeyCode.Tab) ? 5f : 1f;
 
 			if (Input.GetKeyDown (KeyCode.KeypadPlus))
-				NextLevel ();
+				EndLevel ();
 		}
+	}
+
+	void BackToStart() {
+		SceneManager.LoadSceneAsync ("Start");
 	}
 
 	public void GetStar() {
@@ -86,6 +102,9 @@ public class Manager : MonoBehaviour {
 	public void Restart() {
 
 		if (canRestart) {
+
+			StatsManager.Instance.totalFails++;
+
 			stars = 0;
 
 			canRestart = false;
@@ -155,6 +174,18 @@ public class Manager : MonoBehaviour {
 		dimmer.FadeIn (1f);
 	}
 
+	void EndLevel() {
+		EveryoneEmote (Face.Emotion.Happy);
+
+		Invoke ("NextLevel", 2.5f);
+		Invoke ("LevelEnds", 1f);
+
+		cam.Chromate (0.25f * 4f, 0.1f * 4f);
+
+		AudioManager.Instance.Lowpass (true);
+		AudioManager.Instance.PlayEffectAt (28, Vector3.zero, 2f);
+	}
+
 	public void ProcessNext() {
 
 		Card c = stack.RemoveFirst();
@@ -162,12 +193,8 @@ public class Manager : MonoBehaviour {
 		if (!c) {
 			
 			if (IsCurrentLevelComplete ()) {
-				
-				Invoke ("NextLevel", 2.5f);
-				Invoke ("LevelEnds", 1f);
 
-				AudioManager.Instance.Lowpass (true);
-				AudioManager.Instance.PlayEffectAt (28, Vector3.zero, 1.7f);
+				EndLevel ();
 
 			} else {
 				ShowRestart ();
@@ -248,6 +275,9 @@ public class Manager : MonoBehaviour {
 	}
 
 	public void ShowRestart() {
+
+		Invoke ("EveryoneSad", 1.2f);
+
 		if (!restartButton.activeSelf) {
 			restartButton.SetActive (true);
 			ShowTutorial (2);
@@ -292,6 +322,13 @@ public class Manager : MonoBehaviour {
 
 	public void NextLevel() {
 
+		level++;
+		if (level >= levels.Length) {
+			level = 0;
+			SceneManager.LoadSceneAsync ("End");
+			return;
+		}
+
 		AudioManager.Instance.Lowpass (false);
 
 		dimmer.FadeOut (0.5f);
@@ -306,11 +343,6 @@ public class Manager : MonoBehaviour {
 
 		processing = false;
 
-		level++;
-		if (level >= levels.Length) {
-			level = 0;
-		}
-
 		ActivateLevel ();
 		stack.numberOfCards = levels [level].cards;
 		stack.ClearHand (true);
@@ -318,6 +350,9 @@ public class Manager : MonoBehaviour {
 	}
 
 	public void ActivateLevel() {
+
+		StatsManager.Instance.level = level;
+
 		stars = 0;
 
 		startButton.SetEnabled(true);
@@ -330,5 +365,17 @@ public class Manager : MonoBehaviour {
 		}
 
 		levels [level].gameObject.SetActive (true);
+	}
+
+	public void EveryoneEmote(Face.Emotion emotion) {
+		if (treeFirst) {
+			treeFirst.ChainEmote (emotion);
+		}
+
+		stack.AllEmote (emotion);
+	}
+
+	public void EveryoneSad() {
+		EveryoneEmote (Face.Emotion.Sad);
 	}
 }

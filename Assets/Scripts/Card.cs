@@ -149,6 +149,8 @@ public class Card : MonoBehaviour {
 			return;
 		}
 
+		EffectManager.Instance.AddEffectToParent (2, transform.position, transform);
+
 //		AudioManager.Instance.PlayEffectAt (3, transform.position, 0.5f);
 
 		dragTime = 0f;
@@ -367,5 +369,16 @@ public class Card : MonoBehaviour {
 
 		if (rightLink)
 			rightLink.JustRemove ();
+	}
+
+	public void ChainEmote(Face.Emotion emotion) {
+
+		face.Emote (emotion);
+
+		if (leftLink)
+			leftLink.ChainEmote (emotion);
+
+		if (rightLink)
+			rightLink.ChainEmote (emotion);
 	}
 }
