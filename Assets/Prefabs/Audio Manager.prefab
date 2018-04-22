@@ -168,6 +168,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1e38ab265d5874e9dbcb965c52ce96d5, type: 3}
   - {fileID: 8300000, guid: 9524aa45a03e94a028daf464f0b61521, type: 3}
   - {fileID: 8300000, guid: 20439838d75fa4753b78e411240c3544, type: 3}
+  - {fileID: 8300000, guid: a781624d03d8e43a4871c501c7fe987e, type: 3}
   lowpass: {fileID: 169518289805885888}
   highpass: {fileID: 165598837669965322}
 --- !u!165 &165598837669965322
@@ -177,8 +178,8 @@ AudioHighPassFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1990456335414012}
   m_Enabled: 1
-  m_CutoffFrequency: 500
-  m_HighpassResonanceQ: 3
+  m_CutoffFrequency: 10
+  m_HighpassResonanceQ: 6
 --- !u!169 &169518289805885888
 AudioLowPassFilter:
   m_ObjectHideFlags: 1
@@ -187,13 +188,13 @@ AudioLowPassFilter:
   m_GameObject: {fileID: 1990456335414012}
   m_Enabled: 1
   serializedVersion: 3
-  m_LowpassResonanceQ: 2
+  m_LowpassResonanceQ: 3
   lowpassLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 0.51922727
+      value: 0.6818182
       inSlope: 0
       outSlope: 0
       tangentMode: 0

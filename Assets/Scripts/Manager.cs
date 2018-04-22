@@ -112,6 +112,8 @@ public class Manager : MonoBehaviour {
 		processing = false;
 		stack.SpawnNewHand ();
 
+		AudioManager.Instance.Highpass (false);
+
 		startButton.SetEnabled(true);
 
 		foreach (GameObject g in enableThese) {
@@ -160,10 +162,18 @@ public class Manager : MonoBehaviour {
 		if (!c) {
 			
 			if (IsCurrentLevelComplete ()) {
+				
 				Invoke ("NextLevel", 2.5f);
 				Invoke ("LevelEnds", 1f);
+
+				AudioManager.Instance.Lowpass (true);
+				AudioManager.Instance.PlayEffectAt (28, Vector3.zero, 1.7f);
+
 			} else {
 				ShowRestart ();
+				AudioManager.Instance.Highpass (true);
+				AudioManager.Instance.PlayEffectAt (18, Vector3.zero, 0.5f);
+				AudioManager.Instance.PlayEffectAt (26, Vector3.zero, 0.5f);
 			}
 
 			return;
@@ -281,6 +291,8 @@ public class Manager : MonoBehaviour {
 	}
 
 	public void NextLevel() {
+
+		AudioManager.Instance.Lowpass (false);
 
 		dimmer.FadeOut (0.5f);
 

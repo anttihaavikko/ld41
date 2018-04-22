@@ -334,6 +334,8 @@ public class Card : MonoBehaviour {
 		AudioManager.Instance.PlayEffectAt (7, transform.position, 1.0f);
 		AudioManager.Instance.PlayEffectAt (1, transform.position, 1.0f);
 		AudioManager.Instance.PlayEffectAt (26, transform.position, 1.0f);
+
+		AudioManager.Instance.Highpass (true);
 	}
 
 	public void ExplodeNow() {
