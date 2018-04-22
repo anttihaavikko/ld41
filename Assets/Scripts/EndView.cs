@@ -18,7 +18,7 @@ public class EndView : MonoBehaviour {
 
 		if (StatsManager.Instance.altEnding) {
 			totalTime.text = "FEW MINUTES";
-			totalFails.text = "∞";
+			totalFails.text = "INFINITE";
 			thanksText.text = "THANKS FOR \"PLAYING\"!";
 		}
 	}
