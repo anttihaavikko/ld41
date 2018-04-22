@@ -11,6 +11,7 @@ public class StartView : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		Invoke ("EnableGo", 1.5f);
+		SceneManager.LoadSceneAsync ("Options", LoadSceneMode.Additive);
 	}
 	
 	void EnableGo() {
@@ -42,5 +43,6 @@ public class StartView : MonoBehaviour {
 		Invoke ("ChangeScene", 1.1f);
 		dimmer.FadeIn (1f);
 		AudioManager.Instance.PlayEffectAt (28, Vector3.zero, 2f);
+		AudioManager.Instance.Lowpass (true);
 	}
 }

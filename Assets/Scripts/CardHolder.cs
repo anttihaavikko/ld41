@@ -13,9 +13,8 @@ public class CardHolder : MonoBehaviour {
 	public CardHolder targetHolder;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		cards = new List<Card> ();
-		SpawnNewHand ();
 	}
 
 	public void SpawnNewHand() {
@@ -29,13 +28,15 @@ public class CardHolder : MonoBehaviour {
 	}
 
 	public void ClearHand(bool silent = false) {
-		foreach (Card c in cards) {
-			if (silent)
-				c.JustRemove ();
-			else
-				c.Explode ();
+		if (cards.Count > 0) {
+			foreach (Card c in cards) {
+				if (silent)
+					c.JustRemove ();
+				else
+					c.Explode ();
+			}
+			cards.Clear ();
 		}
-		cards.Clear ();
 	}
 
 	public void SpawnCard() {

@@ -344,9 +344,6 @@ public class Manager : MonoBehaviour {
 		processing = false;
 
 		ActivateLevel ();
-		stack.numberOfCards = levels [level].cards;
-		stack.ClearHand (true);
-		stack.SpawnNewHand ();
 	}
 
 	public void ActivateLevel() {
@@ -365,6 +362,11 @@ public class Manager : MonoBehaviour {
 		}
 
 		levels [level].gameObject.SetActive (true);
+
+		stack.numberOfCards = levels [level].cards;
+
+		stack.ClearHand (true);
+		stack.SpawnNewHand ();
 	}
 
 	public void EveryoneEmote(Face.Emotion emotion) {
