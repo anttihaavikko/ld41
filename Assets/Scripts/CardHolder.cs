@@ -44,6 +44,7 @@ public class CardHolder : MonoBehaviour {
 			c.transform.localScale = new Vector3 (1f, 1f, 1f);
 			AddCard (c, true);
 			PositionCards ();
+			c.MoveSound ();
 		}
 	}
 	

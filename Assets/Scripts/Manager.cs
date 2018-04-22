@@ -30,6 +30,10 @@ public class Manager : MonoBehaviour {
 	public Dimmer dimmer;
 	public Slider lengthSlider;
 
+	public CustomButton startButton;
+
+	public EffectCamera cam;
+
 	private static Manager instance = null;
 	public static Manager Instance {
 		get { return instance; }
@@ -108,6 +112,8 @@ public class Manager : MonoBehaviour {
 		processing = false;
 		stack.SpawnNewHand ();
 
+		startButton.SetEnabled(true);
+
 		foreach (GameObject g in enableThese) {
 			g.SetActive (true);
 			EffectManager.Instance.AddEffect (1, g.transform.position);
@@ -118,6 +124,9 @@ public class Manager : MonoBehaviour {
 
 	public void StartProcessing() {
 		if (!processing) {
+
+			startButton.SetEnabled(false);
+
 			processing = true;
 			ProcessNext ();
 
@@ -298,6 +307,8 @@ public class Manager : MonoBehaviour {
 
 	public void ActivateLevel() {
 		stars = 0;
+
+		startButton.SetEnabled(true);
 
 		lengthSlider.value = 1f;
 		lengthSlider.gameObject.SetActive(levels [level].sliderEnabled);

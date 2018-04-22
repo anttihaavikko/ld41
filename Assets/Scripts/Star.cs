@@ -38,6 +38,8 @@ public class Star : MonoBehaviour {
 
 	public void Explode() {
 
+		Manager.Instance.cam.BaseEffect (1.5f);
+
 		AudioManager.Instance.PlayEffectAt (21, transform.position, 1.5f);
 		AudioManager.Instance.PlayEffectAt (4, transform.position, 1.5f);
 		AudioManager.Instance.PlayEffectAt (12, transform.position, 1.5f);

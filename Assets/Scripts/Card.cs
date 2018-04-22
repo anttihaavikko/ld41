@@ -239,7 +239,7 @@ public class Card : MonoBehaviour {
 		NextMove (nextMove);
 	}
 
-	private void MoveSound() {
+	public void MoveSound() {
 		AudioManager.Instance.PlayEffectAt (23, transform.position, 0.7f);
 	}
 
@@ -337,6 +337,8 @@ public class Card : MonoBehaviour {
 	}
 
 	public void ExplodeNow() {
+
+		Manager.Instance.cam.BaseEffect (2f);
 
 		AudioManager.Instance.PlayEffectAt (3, transform.position, 1.0f);
 		AudioManager.Instance.PlayEffectAt (5, transform.position, 1.0f);

@@ -10,7 +10,9 @@ public class CustomButton : MonoBehaviour {
 
 	public UnityEvent onClick;
 
-	void Start() {
+	private bool isEnabled = true;
+
+	void Awake() {
 		sprite = GetComponent<SpriteRenderer> ();
 		fullScale = transform.localScale;
 	}
@@ -24,7 +26,7 @@ public class CustomButton : MonoBehaviour {
 	}
 
 	public void OnMouseDown() {
-		sprite.color = new Color (1f, 1f, 1f, 0.5f);
+		sprite.color = new Color (1f, 1f, 1f, isEnabled ? 0.5f : 0.25f);
 		Tweener.Instance.ScaleTo (transform, fullScale * 1f, 0.25f, 0f, TweenEasings.QuadraticEaseIn, 0);
 
 		AudioManager.Instance.PlayEffectAt (10, transform.position, 1.5f);
@@ -33,9 +35,14 @@ public class CustomButton : MonoBehaviour {
 
 	public void OnMouseUp() {
 		AudioManager.Instance.PlayEffectAt (22, transform.position, 1.5f);
-		sprite.color = Color.white;
+		sprite.color = new Color (1f, 1f, 1f, isEnabled ? 1f : 0.25f);
 
 		if (onClick != null)
 			onClick.Invoke ();
+	}
+
+	public void SetEnabled(bool state) {
+		isEnabled = state;
+		sprite.color = new Color (1f, 1f, 1f, isEnabled ? 1f : 0.25f);
 	}
 }

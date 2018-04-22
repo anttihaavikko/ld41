@@ -1376,6 +1376,8 @@ MonoBehaviour:
   - {fileID: 811426662}
   dimmer: {fileID: 366881545}
   lengthSlider: {fileID: 1651278560}
+  startButton: {fileID: 184349854}
+  cam: {fileID: 1152207286}
 --- !u!4 &246517547
 Transform:
   m_ObjectHideFlags: 0
@@ -6287,6 +6289,8 @@ GameObject:
   - component: {fileID: 1152207283}
   - component: {fileID: 1152207282}
   - component: {fileID: 1152207281}
+  - component: {fileID: 1152207286}
+  - component: {fileID: 1152207285}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6357,6 +6361,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1152207285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1152207280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: 29e7515e72a4845d2b41dcae95c25720, type: 2}
+--- !u!114 &1152207286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1152207280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b99b2b7af1f4fd9ac6a95b8097f8c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transitionMaterial: {fileID: 0}
 --- !u!1001 &1156424055
 Prefab:
   m_ObjectHideFlags: 0
