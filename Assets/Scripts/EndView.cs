@@ -21,8 +21,6 @@ public class EndView : MonoBehaviour {
 			totalFails.text = "∞";
 			thanksText.text = "THANKS FOR \"PLAYING\"!";
 		}
-
-		StatsManager.Instance.ResetStats ();
 	}
 
 	void EnableGo() {
@@ -41,6 +39,7 @@ public class EndView : MonoBehaviour {
 	}
 
 	void ChangeScene() {
+		StatsManager.Instance.ResetStats ();
 		SceneManager.LoadSceneAsync ("Start");
 	}
 }

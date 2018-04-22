@@ -255,7 +255,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &190864923
 GameObject:
@@ -329,7 +329,7 @@ Transform:
   m_LocalScale: {x: 18.203724, y: 18.117538, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &190864926
 MonoBehaviour:
@@ -555,6 +555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 4
+  requiresNormalEnding: 0
 --- !u!1 &453642440
 GameObject:
   m_ObjectHideFlags: 0
@@ -902,6 +903,121 @@ SpriteMask:
   m_FrontSortingOrder: 0
   m_BackSortingOrder: 0
   m_IsCustomRangeActive: 0
+--- !u!1 &498153863
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1824266542152120, guid: 8ca6eb5b4c85243d6a03fda3cb3897eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 498153868}
+  - component: {fileID: 498153867}
+  - component: {fileID: 498153866}
+  - component: {fileID: 498153865}
+  - component: {fileID: 498153864}
+  m_Layer: 0
+  m_Name: True
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &498153864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 498153863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d2d3f80c7c5f406d9ad154d8f03ce85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 5
+  requiresNormalEnding: 1
+--- !u!210 &498153865
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 210243889215768462, guid: 8ca6eb5b4c85243d6a03fda3cb3897eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 498153863}
+  m_Enabled: 1
+  m_SortingLayerID: 1813791297
+  m_SortingLayer: -1
+  m_SortingOrder: 500
+--- !u!102 &498153866
+TextMesh:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 102297339694716328, guid: 8ca6eb5b4c85243d6a03fda3cb3897eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 498153863}
+  m_Text: BUT THE "TRUE" ENDING IS YET TO BE FOUND...
+  m_OffsetZ: 0
+  m_CharacterSize: 18
+  m_LineSpacing: 1
+  m_Anchor: 4
+  m_Alignment: 0
+  m_TabSize: 4
+  m_FontSize: 100
+  m_FontStyle: 0
+  m_RichText: 1
+  m_Font: {fileID: 12800000, guid: 99832f23220b44b5bb65a123e908ef4f, type: 3}
+  m_Color:
+    serializedVersion: 2
+    rgba: 3238002687
+--- !u!23 &498153867
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 23690081398714286, guid: 8ca6eb5b4c85243d6a03fda3cb3897eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 498153863}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 2100000, guid: 99832f23220b44b5bb65a123e908ef4f, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!4 &498153868
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 4763308119407228, guid: 8ca6eb5b4c85243d6a03fda3cb3897eb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 498153863}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -3.75, z: -0.14056213}
+  m_LocalScale: {x: 0.0030399999, y: 0.0030399999, z: 0.0030399999}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &638159843
 GameObject:
   m_ObjectHideFlags: 0
@@ -4788,6 +4904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 2
+  requiresNormalEnding: 0
 --- !u!1 &1459765215
 GameObject:
   m_ObjectHideFlags: 0
@@ -5078,6 +5195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 3
+  requiresNormalEnding: 0
 --- !u!1 &1916620897
 GameObject:
   m_ObjectHideFlags: 0
@@ -5256,6 +5374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 1
+  requiresNormalEnding: 0
 --- !u!1 &1992834642
 GameObject:
   m_ObjectHideFlags: 0

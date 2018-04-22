@@ -6,6 +6,7 @@ public class AppearAfter : MonoBehaviour {
 
 	public float delay = 0f;
 	private Vector3 fullScale;
+	public bool requiresNormalEnding = false;
 
 	void Awake() {
 		fullScale = transform.localScale;
@@ -14,8 +15,11 @@ public class AppearAfter : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		transform.localScale = Vector3.zero;
-		Tweener.Instance.ScaleTo (transform, fullScale, 0.3f, delay, TweenEasings.BounceEaseOut);
-		Invoke ("DoSound", delay);
+
+		if (!requiresNormalEnding || !StatsManager.Instance.altEnding) {
+			Tweener.Instance.ScaleTo (transform, fullScale, 0.3f, delay, TweenEasings.BounceEaseOut);
+			Invoke ("DoSound", delay);
+		}
 	}
 
 	void DoSound() {
