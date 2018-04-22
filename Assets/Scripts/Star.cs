@@ -48,6 +48,7 @@ public class Star : MonoBehaviour {
 
 		EffectManager.Instance.AddEffect (0, transform.position);
 		EffectManager.Instance.AddEffect (1, transform.position);
+		EffectManager.Instance.AddEffect (4, transform.position);
 
 		gameObject.SetActive (false);
 		Manager.Instance.enableThese.Add (gameObject);
