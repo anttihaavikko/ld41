@@ -64,7 +64,7 @@ public class Card : MonoBehaviour {
 
 		shadowScale = shadow.transform.localScale;
 
-		number = Manager.Instance.GenerateNewNumber();
+		number = Manager.Instance ? Manager.Instance.GenerateNewNumber() : Random.Range(1, 99);
 		numberText.text = number.ToString();
 
 		moves = new List<Vector3> ();
@@ -149,11 +149,12 @@ public class Card : MonoBehaviour {
 
 		moveSpeed = normalMoveSpeed + Random.Range(-0.5f, 0.5f);
 
-		if (!Manager.Instance.CanInteract ()) {
+		if (Manager.Instance && !Manager.Instance.CanInteract ()) {
 			return;
 		}
 
-		EffectManager.Instance.AddEffectToParent (2, transform.position, transform);
+		if(EffectManager.Instance) 
+			EffectManager.Instance.AddEffectToParent (2, transform.position, transform);
 
 //		AudioManager.Instance.PlayEffectAt (3, transform.position, 0.5f);
 
@@ -181,7 +182,7 @@ public class Card : MonoBehaviour {
 
 	public void OnMouseUp() {
 
-		if (!Manager.Instance.CanInteract ()) {
+		if (Manager.Instance && !Manager.Instance.CanInteract ()) {
 			
 			if (Application.isEditor && Input.GetKey(KeyCode.K))
 				Explode ();

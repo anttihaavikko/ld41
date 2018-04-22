@@ -12,16 +12,24 @@ public class CardHolder : MonoBehaviour {
 
 	public CardHolder targetHolder;
 
+	public bool demoSpawn = false;
+
 	// Use this for initialization
 	void Awake () {
 		cards = new List<Card> ();
+
+		if (demoSpawn) {
+			SpawnNewHand ();
+		}
 	}
 
 	public void SpawnNewHand() {
 
-		Manager.Instance.ShowStartTutorials ();
+		if (Manager.Instance) {
+			Manager.Instance.ShowStartTutorials ();
+			Manager.Instance.ResetNumbers ();
+		}
 
-		Manager.Instance.ResetNumbers ();
 		for (int i = 0; i < numberOfCards; i++) {
 			Invoke ("SpawnCard", i * 0.1f);
 		}
