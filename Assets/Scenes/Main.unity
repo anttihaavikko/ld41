@@ -1167,6 +1167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: 0
   totalFails: 0
+  altEnding: 0
 --- !u!4 &172238701
 Transform:
   m_ObjectHideFlags: 0

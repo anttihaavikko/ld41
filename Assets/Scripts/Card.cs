@@ -362,6 +362,7 @@ public class Card : MonoBehaviour {
 
 		EffectManager.Instance.AddEffect (0, pos);
 		EffectManager.Instance.AddEffect (1, pos);
+		EffectManager.Instance.AddEffect (5, pos);
 
 		ParticleSystem colorBits = EffectManager.Instance.AddEffect (3, pos).GetComponent<ParticleSystem>();
 		ParticleSystem.MainModule mm = colorBits.main;
