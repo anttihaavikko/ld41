@@ -71,6 +71,10 @@ public class Card : MonoBehaviour {
 
 		colorSprite.color = Color.HSVToRGB (Random.value, 0.5f, 0.99f);
 
+//		if (Random.value < 0.5f) {
+//			colorSprite.transform.localScale = new Vector3 (-colorSprite.transform.localScale.x, colorSprite.transform.localScale.y, colorSprite.transform.localScale.z);
+//		}
+
 		colliderSize = GetComponent<BoxCollider2D> ().bounds.size;
 	}
 

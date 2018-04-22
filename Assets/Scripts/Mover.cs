@@ -7,12 +7,16 @@ public class Mover : MonoBehaviour {
 	public float speed = 1f;
 	public float offset = 0f;
 	public bool noNegatives = false;
+	public bool randomizeOffset = false;
 	public Vector3 direction = Vector3.up;
 
 	private Vector3 originalPosition;
 
 	// Use this for initialization
 	void Start () {
+		if (randomizeOffset) {
+			offset = Random.value * 1000f;
+		}
 		originalPosition = transform.localPosition;
 	}
 

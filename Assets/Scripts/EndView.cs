@@ -8,6 +8,7 @@ public class EndView : MonoBehaviour {
 	public TextMesh totalTime, totalFails;
 	private bool canGo = false;
 	public Dimmer dimmer;
+	public EffectCamera cam;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +30,7 @@ public class EndView : MonoBehaviour {
 			Invoke ("ChangeScene", 1.1f);
 			dimmer.FadeIn (1f);
 			AudioManager.Instance.PlayEffectAt (28, Vector3.zero, 2f);
+			cam.Chromate (0.25f * 4f, 0.1f * 4f);
 		}
 	}
 

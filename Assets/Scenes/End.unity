@@ -344,6 +344,7 @@ MonoBehaviour:
   totalTime: {fileID: 1459765218}
   totalFails: {fileID: 453642443}
   dimmer: {fileID: 2050167238}
+  cam: {fileID: 818571412}
 --- !u!1 &293866462
 GameObject:
   m_ObjectHideFlags: 0

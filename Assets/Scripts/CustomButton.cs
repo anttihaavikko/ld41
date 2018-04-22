@@ -31,6 +31,9 @@ public class CustomButton : MonoBehaviour {
 
 		AudioManager.Instance.PlayEffectAt (10, transform.position, 1.5f);
 		AudioManager.Instance.PlayEffectAt (19, transform.position, 1.5f);
+
+		if(EffectManager.Instance)
+			EffectManager.Instance.AddEffect (2, transform.position);
 	}
 
 	public void OnMouseUp() {

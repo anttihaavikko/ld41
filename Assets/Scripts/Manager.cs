@@ -72,6 +72,9 @@ public class Manager : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			StartProcessing ();
+			AudioManager.Instance.PlayEffectAt (10, Vector3.zero, 1.5f);
+			AudioManager.Instance.PlayEffectAt (19, Vector3.zero, 1.5f);
+			AudioManager.Instance.PlayEffectAt (22, Vector3.zero, 1.5f);
 		}
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
@@ -80,8 +83,12 @@ public class Manager : MonoBehaviour {
 			Invoke ("BackToStart", 1.1f);
 		}
 
-		if (Input.GetKeyDown (KeyCode.R))
+		if (Input.GetKeyDown (KeyCode.R)) {
 			Restart ();
+			AudioManager.Instance.PlayEffectAt (10, Vector3.zero, 1.5f);
+			AudioManager.Instance.PlayEffectAt (19, Vector3.zero, 1.5f);
+			AudioManager.Instance.PlayEffectAt (22, Vector3.zero, 1.5f);
+		}
 
 		if (Application.isEditor) {
 			Time.timeScale = Input.GetKey (KeyCode.Tab) ? 5f : 1f;
@@ -329,8 +336,6 @@ public class Manager : MonoBehaviour {
 			return;
 		}
 
-		AudioManager.Instance.Lowpass (false);
-
 		dimmer.FadeOut (0.5f);
 
 		HideTutorial ();
@@ -347,6 +352,8 @@ public class Manager : MonoBehaviour {
 	}
 
 	public void ActivateLevel() {
+
+		AudioManager.Instance.Lowpass (false);
 
 		StatsManager.Instance.level = level;
 
