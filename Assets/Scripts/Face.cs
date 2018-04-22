@@ -266,10 +266,13 @@ public class Face : MonoBehaviour {
 		}
 
 		if (emotion == Face.Emotion.Brag) {
+			AudioManager.Instance.PlayEffectAt (16, transform.position, 1.5f);
 			RaiseBrows ();
 			Invoke ("ResetBrows", 0.15f);
 			Invoke ("RaiseBrows", 0.35f);
 			Invoke ("ResetBrows", 0.5f);
+			Invoke ("RaiseBrows", 0.6f);
+			Invoke ("ResetBrows", 0.8f);
 
 			nextEmotion = Emotion.Default;
 			Invoke ("DoNextEmote", 1f);

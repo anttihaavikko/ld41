@@ -162,6 +162,9 @@ public class Card : MonoBehaviour {
 		dragPoint = Vector3.zero;
 
 		sprite.sortingLayerName = "Lifted";
+
+		face.Emote (Face.Emotion.Shocked);
+		AudioManager.Instance.PlayEffectAt (11, transform.position, 1f);
 	}
 
 	public void SetHeight(bool raised) {
@@ -185,6 +188,9 @@ public class Card : MonoBehaviour {
 		currentHolder.AddCard (this, false);
 
 		sprite.sortingLayerName = "Default";
+
+		face.Emote (Face.Emotion.Happy, Face.Emotion.Default, 1f);
+		AudioManager.Instance.PlayEffectAt (24, transform.position, 1f);
 	}
 
 	private bool LeftArea(float distance) {
@@ -233,6 +239,10 @@ public class Card : MonoBehaviour {
 		NextMove (nextMove);
 	}
 
+	private void MoveSound() {
+		AudioManager.Instance.PlayEffectAt (23, transform.position, 0.7f);
+	}
+
 	public void NextMove(int i) {
 //		transform.position = moves [i];
 
@@ -245,6 +255,10 @@ public class Card : MonoBehaviour {
 //		float lenMod = nextMove < moves.Count ? 1f : Manager.Instance.lengthSlider.value;
 
 		Tweener.Instance.MoveTo (transform, moves [i], 0.3f, 0f, TweenEasings.QuadraticEaseIn);
+
+		if ((transform.position - moves [i]).magnitude > 1f) {
+			Invoke ("MoveSound", 0.25f);
+		}
 
 		if (nextMove < moves.Count) {
 			Invoke ("DoMove", 0.3f);
@@ -274,6 +288,10 @@ public class Card : MonoBehaviour {
 					other.Explode (0.5f);
 				}
 
+				if (hit.tag == "Block") {
+					hit.GetComponentInChildren<Face> ().Emote (Face.Emotion.Angry, Face.Emotion.Brag, 1.75f);
+				}
+
 			} else {
 
 				float extraDelay = Manager.Instance.ShowMoveTutorial (transform.position, moves [i]) ? 3.5f : 0f;
@@ -289,7 +307,8 @@ public class Card : MonoBehaviour {
 	public void Squish() {
 		EffectManager.Instance.AddEffect (2, transform.position);
 		Tweener.Instance.ScaleTo (transform, Vector3.one * 0.9f, 0.2f, 0f, TweenEasings.BounceEaseOut);
-
+		AudioManager.Instance.PlayEffectAt (17, transform.position, 0.75f);
+		AudioManager.Instance.PlayEffectAt (24, transform.position, 0.5f);
 	}
 
 	private void NextCard() {
@@ -312,9 +331,16 @@ public class Card : MonoBehaviour {
 
 	public void Shake() {
 		shaking = true;
+		AudioManager.Instance.PlayEffectAt (7, transform.position, 1.0f);
+		AudioManager.Instance.PlayEffectAt (1, transform.position, 1.0f);
+		AudioManager.Instance.PlayEffectAt (26, transform.position, 1.0f);
 	}
 
 	public void ExplodeNow() {
+
+		AudioManager.Instance.PlayEffectAt (3, transform.position, 1.0f);
+		AudioManager.Instance.PlayEffectAt (5, transform.position, 1.0f);
+		AudioManager.Instance.PlayEffectAt (0, transform.position, 1.0f);
 		
 		Vector3 pos = transform.position;
 		pos.z = 0;
