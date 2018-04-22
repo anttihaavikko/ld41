@@ -16,7 +16,10 @@ public class StartView : MonoBehaviour {
 		Invoke ("EnableGo", 1.5f);
 		SceneManager.LoadSceneAsync ("Options", LoadSceneMode.Additive);
 
+		AudioManager.Instance.Lowpass (false);
+
 		Invoke ("ExecuteCard", 45f);
+		Invoke ("FakeEnd", 110f);
 	}
 	
 	void EnableGo() {
@@ -68,5 +71,17 @@ public class StartView : MonoBehaviour {
 
 		Invoke ("ExecuteCard", 5f);
 	}
-		
+
+	void FakeEnd() {
+		dimmer.FadeIn (1f);
+		StatsManager.Instance.altEnding = true;
+		AudioManager.Instance.PlayEffectAt (28, Vector3.zero, 2f);
+		AudioManager.Instance.Lowpass (true);
+		cam.Chromate (0.25f * 4f, 0.1f * 4f);
+		Invoke ("GoFakeEnd", 1.1f);
+	}
+
+	void GoFakeEnd() {
+		SceneManager.LoadSceneAsync ("End");
+	}
 }

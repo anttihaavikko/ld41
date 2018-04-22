@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class EndView : MonoBehaviour {
 
-	public TextMesh totalTime, totalFails;
+	public TextMesh totalTime, totalFails, thanksText;
 	private bool canGo = false;
 	public Dimmer dimmer;
 	public EffectCamera cam;
@@ -15,6 +15,12 @@ public class EndView : MonoBehaviour {
 		totalTime.text = StatsManager.Instance.GetTime ();
 		totalFails.text = StatsManager.Instance.totalFails.ToString();
 		Invoke ("EnableGo", 1.5f);
+
+		if (StatsManager.Instance.altEnding) {
+			totalTime.text = "FEW MINUTES";
+			totalFails.text = "∞";
+			thanksText.text = "THANKS FOR \"PLAYING\"!";
+		}
 
 		StatsManager.Instance.ResetStats ();
 	}

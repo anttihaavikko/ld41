@@ -7,6 +7,7 @@ public class StatsManager : MonoBehaviour {
 	private float totalTime = 0f;
 	public int level = 0;
 	public int totalFails = 0;
+	public bool altEnding = false;
 
 	/******/
 
@@ -39,5 +40,6 @@ public class StatsManager : MonoBehaviour {
 		totalTime = 0f;
 		level = 0;
 		totalFails = 0;
+		altEnding = false;
 	}
 }
