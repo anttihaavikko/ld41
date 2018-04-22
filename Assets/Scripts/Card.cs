@@ -228,7 +228,7 @@ public class Card : MonoBehaviour {
 	public void AddMove(Vector3 pos, bool raised = false) {
 		Collider2D hit = Physics2D.OverlapBox (pos, colliderSize, 0, defaultMask);
 		raised = hit ? true : raised;
-		moves.Add (pos + new Vector3(0, 0, raised ? -1f : 0));
+		moves.Add (pos + new Vector3(0, 0, raised ? -1f : -0.01f));
 	}
 
 	public void SetLineRoot(Vector3 pos) {
