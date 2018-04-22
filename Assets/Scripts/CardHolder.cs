@@ -80,6 +80,18 @@ public class CardHolder : MonoBehaviour {
 		return c;
 	}
 
+	public Card RemoveRandom() {
+		Card c = null;
+		int i = Random.Range (0, cards.Count);
+
+		if (cards.Count > 0) {
+			c = cards [i];
+			cards.RemoveAt (i);
+		}
+		PositionCards ();
+		return c;
+	}
+
 	public void RemoveCard(Card c) {
 
 		if (cards.Contains (c)) {

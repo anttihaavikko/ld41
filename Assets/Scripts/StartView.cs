@@ -9,10 +9,14 @@ public class StartView : MonoBehaviour {
 	public Dimmer dimmer;
 	public EffectCamera cam;
 
+	public CardHolder leftHolder, rightHolder;
+
 	// Use this for initialization
 	void Start () {
 		Invoke ("EnableGo", 1.5f);
 		SceneManager.LoadSceneAsync ("Options", LoadSceneMode.Additive);
+
+		Invoke ("ExecuteCard", 45f);
 	}
 	
 	void EnableGo() {
@@ -28,6 +32,10 @@ public class StartView : MonoBehaviour {
 				Invoke ("DoQuit", 1.1f);
 				return;
 			}
+		}
+
+		if (Application.isEditor) {
+			Time.timeScale = Input.GetKey (KeyCode.Tab) ? 5f : 1f;
 		}
 	}
 
@@ -47,4 +55,18 @@ public class StartView : MonoBehaviour {
 		AudioManager.Instance.Lowpass (true);
 		cam.Chromate (0.25f * 4f, 0.1f * 4f);
 	}
+
+	public void ExecuteCard() {
+		var holder = leftHolder.CardCount() > rightHolder.CardCount() ? leftHolder : rightHolder;
+
+		if (holder.CardCount () > 0) {
+			Card c = holder.RemoveRandom ();
+			c.transform.position = new Vector3 (c.transform.position.x, c.transform.position.y, -0.25f);
+			c.shadow.enabled = true;
+			c.Explode (-0.25f);
+		}
+
+		Invoke ("ExecuteCard", 5f);
+	}
+		
 }

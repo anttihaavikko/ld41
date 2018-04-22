@@ -57,6 +57,8 @@ public class Card : MonoBehaviour {
 
 	private Vector2 colliderSize;
 
+	private EffectCamera cam;
+
 	// Use this for initialization
 	void Start () {
 		originalScale = transform.localScale;
@@ -70,6 +72,8 @@ public class Card : MonoBehaviour {
 		moves = new List<Vector3> ();
 
 		colorSprite.color = Color.HSVToRGB (Random.value, 0.5f, 0.99f);
+
+		cam = Camera.main.GetComponent<EffectCamera> ();
 
 //		if (Random.value < 0.5f) {
 //			colorSprite.transform.localScale = new Vector3 (-colorSprite.transform.localScale.x, colorSprite.transform.localScale.y, colorSprite.transform.localScale.z);
@@ -347,7 +351,7 @@ public class Card : MonoBehaviour {
 
 	public void ExplodeNow() {
 
-		Manager.Instance.cam.BaseEffect (2f);
+		cam.BaseEffect (2f);
 
 		AudioManager.Instance.PlayEffectAt (3, transform.position, 1.0f);
 		AudioManager.Instance.PlayEffectAt (5, transform.position, 1.0f);
